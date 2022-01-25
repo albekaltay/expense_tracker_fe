@@ -1,6 +1,7 @@
 import {  BrowserRouter as Router,Routes,Route} from "react-router-dom";
 import SignUp from "./components/SignUp"
 import { Layout, Menu, Breadcrumb } from 'antd';
+import Login from "./components/Login";
 
 
 
@@ -25,7 +26,11 @@ const App = () => {
       
       <Routes>
         <Route path="/users/register" element={<SignUp/>}> </Route>  
+        <Route  path="/login" element={<Login/>}                 ></Route>
         </Routes>
+
+      
+
     </Content>
     <Footer style={{ textAlign: 'center' }}>Expense Tracker ©2022 React Dersleri</Footer>
   </Layout>

@@ -1,6 +1,7 @@
-import { Form, Input, Button,message } from 'antd';
+import { Form, Input, Button } from 'antd';
 import { useNavigate } from "react-router-dom";
 import api from '../utils/api';
+import showError from '../utils/showError';
 
 
 
@@ -22,21 +23,19 @@ const SignUp = () => {
       };
 
       
-const showError = (err:any) => {
-  message.error(err);
-};
 
 
 
 
-      const navigate = useNavigate()
+      const navigate : any = useNavigate()
+      
 
       const onFinish = async (values: any )=> {
     
             
       try {
         await  api.post("/users/register",values)
-        navigate("/login"); 
+        navigate( "/login",{state: { newSignUp:true}}); 
 
         
       } catch (error) {
@@ -47,12 +46,6 @@ const showError = (err:any) => {
       }
 
 
-  
-
-     
-          
-
-      
       
       
        
