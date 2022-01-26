@@ -11,9 +11,9 @@ import { Provider } from 'react-redux';
 const store = createStore(rootReducer,applyMiddleware(thunk))
 
 ReactDOM.render(
-
-    <App />,
- 
+  <Provider store={store}>
+    <App />
+    </Provider>,
   document.getElementById('root')
 );
 
