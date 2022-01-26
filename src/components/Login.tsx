@@ -1,6 +1,12 @@
 import { Form, Input, Button,Result } from 'antd';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
-import api from '../utils/api';
+import { AppState } from '../store';
+import login from '../store/actions/userAction';
+import { LoginForm } from '../types/User';
+import showError from '../utils/showError';
+import showSuccess from '../utils/showSuccess';
 
   
 
@@ -8,30 +14,56 @@ const Login = () => {
 
 
     const location  = useLocation();
-   
-
+    const dispatch = useDispatch();
+    const {data,loading,error} = useSelector((state: AppState) => state.user)
 
         const navigate = useNavigate();
-    
-        const onFinish = async (values: any) => {
+
+        
+        const onFinish  = (values: LoginForm) => {
+ 
+                dispatch(login(values))
+
+        }
+
+        useEffect(() => {
+
+        data.username && showSuccess("Login Success!")
+         
+        }, [data.username]);
+        
 
 
-            try{
+        useEffect(() => {
+         error && showError(error)
+        }, [error]);
 
-                console.log('Success:', values);
-                await api.post("/users/login",values);
-                navigate("/");
 
-            }   
-            catch(error) {
-                console.log({error});
-            }
+        useEffect(() => {
+            const token = localStorage.getItem("token")
+         
+            token === data.token  && navigate("/");
+        
+        }, [data]);
+        
+        
+        // const onFinish = async (values: any) => {
+
+
+        //     try{
+
+        //         console.log('Success:', values);
+        //         await api.post("/users/login",values);
+        //         navigate("/");
+
+        //     }   
+        //     catch(error) {
+        //         console.log({error});
+        //     }
    
-        };
+        // };
       
-        const onFinishFailed = (errorInfo: any) => {
-          console.log('Failed:', errorInfo);
-        };
+     
     
 
   return( <Form
@@ -40,7 +72,7 @@ const Login = () => {
   wrapperCol={{ span: 16 }}
   initialValues={{ remember: true }}
   onFinish={onFinish}
-  onFinishFailed={onFinishFailed}
+//   onFinishFailed={onFinishFailed}
   autoComplete="off"
 >
    {(location as any).state?.newSignUp  &&
